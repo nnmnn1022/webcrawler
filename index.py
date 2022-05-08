@@ -19,8 +19,11 @@ res = requests.get(url, params=params, headers=headers)
 
 # beutifulsoup 4는 html을 파싱 가능한 형태로 만들어주는 객체
 soup = BeautifulSoup(res.text, 'html.parser')
-
-textlist = soup.findAll('a', {'class' : "list_tit nclicks('rig.renws2')"})
+t = soup.find('td', {'class' :'content'})
+textlist = t.findAll('a', {'class' : "cluster_text_headline nclicks(cls_eco.clsart)"})
+news = []
+for text in textlist :
+    news.append(text.text + '\n')
 # want_text = []
 # for text in textlist :
 #     want_text.append(text.findAll({'class' : 'cluster_item as_line'}))
@@ -32,5 +35,5 @@ textlist = soup.findAll('a', {'class' : "list_tit nclicks('rig.renws2')"})
 
 # for t in tag :
 #     text = text.replace(t, '')
-with open(myfolder + '\\' + today + '_news.txt', 'a', encoding='utf-8-sig') as f:
-    f.writelines(soup.text)
+with open(myfolder + '\\' + today + '_news.txt', 'w', encoding='utf-8-sig') as f:
+    f.writelines(news)
