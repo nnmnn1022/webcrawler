@@ -1,17 +1,36 @@
 from cgitb import text
+from bs4 import BeautifulSoup
 import requests
 import re
+from datetime import datetime
 
-url = 'https://n.news.naver.com/mnews/article/015/0004695776?sid=101'
+today = datetime.today().strftime("%Y_%m_%d")
+myfolder = 'C:\\Users\\Umoo\\Desktop\\news'
 
-res = requests.get(url)
-text = res.text
+url = 'https://news.naver.com/main/main.naver'
+params = {'mode' : 'LSD', 'mid' : 'shm'}
+category = {'sid1' : '101'}
+# params2 = {'date' :f'%{today}', 'page' : 1}
+headers = {'user-agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36'}
 
-regex = re.compile('<.+?>')
-tag = regex.findall(text)
+params.update(category)
+# params.update(params2)
+res = requests.get(url, params=params, headers=headers)
+
+# beutifulsoup 4는 html을 파싱 가능한 형태로 만들어주는 객체
+soup = BeautifulSoup(res.text, 'html.parser')
+
+textlist = soup.findAll('a', {'class' : "list_tit nclicks('rig.renws2')"})
+# want_text = []
+# for text in textlist :
+#     want_text.append(text.findAll({'class' : 'cluster_item as_line'}))
 
 
-for t in tag :
-    text = text.replace(t, '')
+# regex = re.compile('<.+?>')
+# tag = regex.findall(text)
 
-print(text)
+
+# for t in tag :
+#     text = text.replace(t, '')
+with open(myfolder + '\\' + today + '_news.txt', 'a', encoding='utf-8-sig') as f:
+    f.writelines(soup.text)

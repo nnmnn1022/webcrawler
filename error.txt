@@ -1,0 +1,5 @@
+ConnectionResetError
+아무런 정보 없이 접근하는 것에 대해 차단을 하는 것으로 보임.
+
+>> 개발자 도구 > 네트워크 > 페이지 > 헤더 > user-agent를 복사하여, header로 넣어 주면 됨
+requests.get에는 headers = headers
