@@ -5,7 +5,7 @@ import re
 from datetime import datetime
 
 today = datetime.today().strftime("%Y_%m_%d")
-myfolder = 'C:\\Users\\Umoo\\Desktop\\news'
+myfolder = 'C:\\Users\\mhyoo\\Desktop\\news'
 
 url = 'https://news.naver.com/main/main.naver'
 params = {'mode' : 'LSD', 'mid' : 'shm'}
@@ -23,17 +23,7 @@ t = soup.find('td', {'class' :'content'})
 textlist = t.findAll('a', {'class' : "cluster_text_headline nclicks(cls_eco.clsart)"})
 news = []
 for text in textlist :
-    news.append(text.text + '\n')
-# want_text = []
-# for text in textlist :
-#     want_text.append(text.findAll({'class' : 'cluster_item as_line'}))
+    news.append(text.attrs['href'] + '\n' + text.text + '\n\n')
 
-
-# regex = re.compile('<.+?>')
-# tag = regex.findall(text)
-
-
-# for t in tag :
-#     text = text.replace(t, '')
 with open(myfolder + '\\' + today + '_news.txt', 'w', encoding='utf-8-sig') as f:
     f.writelines(news)
